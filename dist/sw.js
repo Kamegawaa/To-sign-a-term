@@ -1,4 +1,4 @@
-const CACHE='termos-obra-shell-v1.0.0';
+const CACHE='termos-obra-shell-v1.0.1';
 const FILES=['/','/index.html','/styles.css','/app.js','/core.js','/db.js','/template.js','/pdf.js','/signature.js','/google.js','/tour.js','/manifest.webmanifest','/assets/icon.svg','/assets/icon-192.png','/assets/icon-512.png','/assets/termo-adesao.pdf','/vendor/pdf-lib.min.js','/vendor/fflate.min.js'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES))));
 // Não force ativação no meio de um atendimento. Atualizações entram após fechar as abas.
