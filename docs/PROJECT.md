@@ -19,3 +19,8 @@ Modelo exato/iPadOS; fidelidade dos PDFs preenchidos; nomes longos; três assina
 
 ## Entrega 0.2 — pacote para Vercel
 Removidos os blocos promocionais indicados; rodapé independente com referências públicas. Coach Marks aponta apenas para elementos existentes, bloqueia o fundo, mantém navegação por teclado e respeita o skip anterior. Usuário fará criação do repositório e hospedagem; não publicar automaticamente esta entrega.
+
+## Entrega 1.0 — candidato integrado para teste
+Implementados cadastros, fluxo de voluntário, revisão e assinatura, testemunhas individual/lote, geração local do PDF, exportação PDF/ZIP, IndexedDB com retenção e fila Gmail/Drive. Integração Google usa GIS com token apenas em memória; para o uso em um aparelho, dispensa backend e segredo. Requer Client ID OAuth próprio configurado pelo responsável.
+
+Parada solicitada pelo usuário para economizar tokens. Ver README e QA.md para separar o que foi implementado do que já foi validado. Continuar pela validação de lote e iPad, sem recomeçar o projeto.

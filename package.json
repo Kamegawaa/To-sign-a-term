@@ -1,0 +1,11 @@
+{
+  "name": "termos-da-obra",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": { "pdf-lib": "1.17.1", "fflate": "0.8.2" }
+}

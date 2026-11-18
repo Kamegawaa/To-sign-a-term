@@ -1,44 +1,49 @@
-# Termos da Obra — v0.2.0
-Projeto independente, estático, em HTML, CSS e JavaScript, sem dependências de instalação.
+# Termos da Obra — v1.0.0 (candidato para teste)
+Aplicativo independente para atendimento presencial no iPad. Não possui vínculo com JW.ORG. Os dados pessoais ficam no IndexedDB do navegador. Não há banco de dados remoto ou servidor de autenticação.
 
-## Publicar na Vercel pelo GitHub
-1. Extraia o ZIP.
-2. Crie seu repositório no GitHub e envie o conteúdo da pasta `termos-da-obra`, incluindo `dist`, `docs`, `README.md` e `vercel.json`. Não envie somente o ZIP.
-3. Na Vercel, importe esse repositório.
-4. Use a raiz do repositório como Root Directory. Framework Preset: **Other**. Build Command: vazio. Output Directory: **dist**. O `vercel.json` já define essas opções.
-5. Publique. Este pacote não depende do ChatGPT ou da hospedagem anterior.
+## Fluxo implementado
+1. Cadastre uma associação jurídica (AJ).
+2. Prepare uma obra com AJ, modelo, cidade, UF e início do serviço.
+3. Preencha os dados de cada voluntário adulto, confira a prévia do PDF e colha a assinatura.
+4. Cadastre as duas testemunhas (nome, RG, CPF e e-mail).
+5. Na lista de termos, selecione um ou vários. Confira os documentos e colha as duas assinaturas com confirmação explícita do conjunto.
+6. Exporte um PDF ou um ZIP com os PDFs. Escolha também enviar as cópias pelo Gmail e, opcionalmente, para o Meu Drive.
 
-A publicação na Vercel não foi realizada por este pacote. O controle de acesso da hospedagem anterior não é transferido; configure o acesso na Vercel conforme sua necessidade antes de usar dados reais.
+O modelo original permanece separado em `dist/assets/termo-adesao.pdf`; campos e posições das assinaturas ficam em `dist/template.js`. Texto original preservado; linha extra à esquerda do voluntário fica vazia. Novos modelos exigem novo arquivo, mapeamento e validação, não apenas upload arbitrário.
 
-## Abrir localmente
-Com Python instalado, execute na raiz:
+## Publicação
+Repositório ligado à Vercel, branch de produção `main`, framework **Other**, saída **dist**, comando de build vazio. As bibliotecas locais necessárias estão incluídas em `dist/vendor` com suas licenças. Não é necessário configurar secrets na Vercel.
 
-```sh
-python -m http.server 8080 --directory dist
-```
+Para desenvolvimento: `npm ci`, `npm test`, `npm run build` (atualiza as cópias locais das bibliotecas). Sirva `dist` por HTTP local ou HTTPS. Não abra por `file://`.
 
-Abra http://localhost:8080. Não é necessário instalar Node ou executar npm install.
+## iPad e offline
+Abra a URL com internet e aguarde “Aplicativo e modelo disponíveis offline”. Adicione à Tela de Início pelo Safari. Use sempre a mesma origem e modo de abertura, pois o armazenamento pode diferir entre Safari e aplicativo instalado.
 
-## O que funciona
-- Página inicial responsiva e visual simplificado.
-- Modelo PDF incluído, com texto original, 28 campos, linha extra vazia e comentário de revisão removido.
-- Coach Marks com área destacada, fundo bloqueado, navegação por teclado, botão de pular e reabertura em Ajuda.
-- Preferência do tutorial armazenada apenas neste navegador. Limpar os dados do navegador remove essa preferência.
-- Rodapé independente com referências públicas, explicitamente identificadas como links do JW.ORG. Esses termos externos não são os termos deste aplicativo.
+O service worker armazena a interface, bibliotecas e modelo, sem cachear Google ou PDFs pessoais. Uma atualização aguarda o fechamento das abas; não interrompe o atendimento. Incremente a versão do cache em `dist/sw.js` em toda publicação que altere arquivos da interface. Os documentos temporários expiram após sete dias, com limpeza ao abrir o aplicativo. Cadastros de AJ, obra e testemunhas permanecem. Arquivos exportados para Arquivos não são apagados. A persistência do navegador não substitui a exportação.
 
-## Próximas etapas
-Cadastro de obra, AJ e testemunhas; formulário com placeholders; assinaturas; PDF preenchido; offline; integração Gmail/Drive. Essas funções ainda não estão implementadas. Não há autenticação própria nem coleta de dados pessoais nesta versão.
+Os termos assinados não são editados. Alterações cadastrais só afetam novos documentos. A assinatura do voluntário informa que as testemunhas serão incluídas posteriormente. O PDF final e seu SHA-256 são guardados para que exportação e envio usem os mesmos bytes.
 
-## Acrescentar etapas ao tutorial
-Edite `tourSteps` em `dist/app.js`. Cada entrada possui `target` (seletor CSS), `title` e `text`. Inclua apenas controles já implementados. Alvos ausentes ou ocultos são ignorados. Mantenha a chave de preferência para respeitar quem já pulou; novas etapas não devem abrir o guia automaticamente para essas pessoas.
+## Google: configuração externa ainda necessária
+A integração utiliza o modelo de token do Google Identity Services, diretamente no navegador. O Client ID é público; nunca inserir client secret. O token fica somente na memória da sessão, sem localStorage, IndexedDB ou repositório.
 
-## Estrutura
-- dist/index.html: interface
-- dist/styles.css: estilos
-- dist/app.js: Coach Marks e conexão
-- dist/assets/termo-adesao.pdf: modelo
-- dist/assets/icon.svg: ícone independente
-- docs/PROJECT.md: requisitos acordados
-- vercel.json: configuração de publicação
+1. Crie um projeto no Google Cloud e habilite Gmail API e Google Drive API.
+2. Configure a tela de consentimento; no modo de teste, cadastre seu Gmail como usuário de teste.
+3. Crie credencial OAuth de tipo Aplicativo da Web.
+4. Em origens JavaScript autorizadas, inclua `https://termosdeadesao.vercel.app`. Para prévias da Vercel, cada origem utilizada também precisa estar autorizada.
+5. Na tela Conexão Google do app, cole o Client ID e salve. Conecte a conta e autorize `gmail.send` e, opcionalmente, `drive.file`.
+6. Processe a fila com internet e aplicativo aberto. Reautorize quando o token expirar.
 
-Referência de implantação: https://vercel.com/docs/project-configuration/vercel-json
+Um e-mail por termo é enviado às duas testemunhas, com PDF anexo. Upload opcional na raiz de Meu Drive, privado por padrão. Não existe processamento em segundo plano com o aplicativo fechado. A fila deve ser processada explicitamente; reconectar internet não dispara mensagens sozinho.
+
+O Drive usa ID reservado antes do upload para permitir recuperação sem duplicação. Resultado incerto de envio Gmail é bloqueado até conferência manual na pasta Enviados. “Aceito pelo Gmail” não comprova entrega ao destinatário.
+
+## Verificação desta entrega
+- 10 testes automatizados passando: documentos, validações CPF/CNPJ, escape de HTML, cabeçalhos de e-mail, retenção e restrições de testemunhas.
+- PDF gerado e renderizado para inspeção: uma página, acentos, campos, três assinaturas de teste e linha extra vazia. Nenhum campo Widget editável no PDF final.
+- Testado pelo navegador: cadastro de AJ e obra, formulário do voluntário, prévia e gravação de assinatura fictícia.
+- Ainda não validado de ponta a ponta: testemunhas em lote na interface, exportação no iPad real, abertura sem rede no iPad e envio real Gmail/Drive (falta configuração OAuth da conta).
+
+## Ponto de retomada
+Entrega interrompida por solicitação do usuário para disponibilizar o trabalho já feito. Antes de uso com dados reais, executar `docs/QA.md`. Não adicionar dados pessoais de teste ou PDFs assinados ao Git. Arquivos em `tmp/` são ignorados.
+
+Referências: https://developers.google.com/identity/oauth2/web/guides/use-token-model | https://developers.google.com/workspace/gmail/api/guides/sending | https://developers.google.com/workspace/drive/api/guides/manage-uploads
