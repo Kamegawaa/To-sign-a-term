@@ -1,5 +1,5 @@
-const CACHE='termos-obra-shell-v1.0.1';
-const FILES=['/','/index.html','/styles.css','/app.js','/core.js','/db.js','/template.js','/pdf.js','/signature.js','/google.js','/tour.js','/manifest.webmanifest','/assets/icon.svg','/assets/icon-192.png','/assets/icon-512.png','/assets/termo-adesao.pdf','/vendor/pdf-lib.min.js','/vendor/fflate.min.js'];
+const CACHE='termos-obra-shell-v1.0.2';
+const FILES=['/','/index.html','/styles.css','/app.js','/core.js','/db.js','/template.js','/pdf.js','/signature.js','/tour.js','/manifest.webmanifest','/assets/icon.svg','/assets/icon-192.png','/assets/icon-512.png','/assets/termo-adesao.pdf','/vendor/pdf-lib.min.js','/vendor/fflate.min.js'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES))));
 // Não force ativação no meio de um atendimento. Atualizações entram após fechar as abas.
 self.addEventListener('activate',event=>event.waitUntil((async()=>{await Promise.all((await caches.keys()).filter(k=>k.startsWith('termos-obra-shell-')&&k!==CACHE).map(k=>caches.delete(k)));await self.clients.claim();})()));
