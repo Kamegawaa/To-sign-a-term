@@ -3,11 +3,10 @@
 // O skip é global: novas etapas não reativam automaticamente um tutorial dispensado.
 const tourSteps = [
  {target:'#nav-aj',title:'1. Cadastre a associação jurídica',text:'Informe o nome, CNPJ e sede da AJ uma vez. Na preparação de cada obra, você escolhe qual associação será utilizada.'},
- {target:'#nav-obras',title:'2. Prepare a obra',text:'Selecione a AJ e o modelo. Informe o local e a data de início. Os dados serão copiados para cada termo; alterar cadastros não modifica termos assinados.'},
- {target:'#start-volunteer',title:'3. Receba os voluntários',text:'Selecione uma obra e inicie o atendimento. O voluntário preenche, confere o PDF e assina com seu auxílio. Depois escolha Preencher novo termo ou Finalizar testemunhas.'},
- {target:'#nav-testemunhas',title:'4. Cadastre as duas testemunhas',text:'Salve nome, RG, CPF e e-mail. As assinaturas não são reutilizadas de outros lotes. O voluntário não pode testemunhar o próprio termo.'},
- {target:'#nav-termos',title:'5. Confira e assine os termos',text:'Selecione um ou vários termos da obra, escolha as duas testemunhas e confira cada documento. Cada testemunha assina e confirma explicitamente o conjunto selecionado.'},
- {target:'#nav-google',title:'6. Salve e envie',text:'Os PDFs são gerados no aparelho. Salve um PDF ou um ZIP em Arquivos. Configure e conecte o Google para enviar cópias às testemunhas e, opcionalmente, ao Drive. Pendências ficam disponíveis por até sete dias.'},
+ {target:'#nav-obras',title:'2. Cadastre o salão',text:'Selecione a AJ e o modelo. Informe o local e a data de início. Os dados serão copiados para cada termo; alterar cadastros não modifica termos assinados.'},
+ {target:'#start-volunteer',title:'Preencha os termos dos voluntários',text:'Selecione uma obra e inicie o atendimento. O voluntário preenche, confere o PDF e assina com seu auxílio. Depois escolha Preencher novo termo ou Finalizar testemunhas.'},
+ {target:'#nav-testemunhas',title:'3. Cadastre as duas testemunhas',text:'Salve nome, RG e CPF. As assinaturas não são reutilizadas de outros lotes. O voluntário não pode testemunhar o próprio termo.'},
+ {target:'#nav-termos',title:'4. Confira e assine os termos',text:'Selecione um ou vários termos da obra, escolha as duas testemunhas e confira cada documento. Cada testemunha assina e confirma explicitamente o conjunto selecionado.'},
  {target:'#help',title:'Reabra quando precisar',text:'Este guia é somente para quem administra a obra. Pular ou concluir desativa a abertura automática. Os voluntários recebem apenas instruções nos campos.'}
 ];
 const key = 'termos-obra:tutorial-adm:v1';
