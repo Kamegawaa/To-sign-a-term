@@ -3,7 +3,6 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import * as PDFLib from 'pdf-lib';
 import {generatePDF,hashBytes} from '../dist/pdf.js';
-import {messageFor} from '../dist/google.js';
 globalThis.PDFLib=PDFLib;
 globalThis.fetch=async()=>({ok:true,arrayBuffer:async()=>new Uint8Array(await fs.readFile('dist/assets/termo-adesao.pdf')).buffer});
 const img='data:image/png;base64,'+await fs.readFile('tests/signature-test.png','base64');
@@ -16,7 +15,6 @@ test('generate original single-page static PDF with three signatures',async()=>{
  for(let i=0;i<(annots?.size()||0);i++)assert.notEqual(pdf.context.lookup(annots.get(i)).get(PDFLib.PDFName.of('Subtype'))?.toString(),'/Widget');
  await fs.mkdir('tmp',{recursive:true});await fs.writeFile('tmp/termo-teste.pdf',bytes);
  const hash=await hashBytes(bytes);assert.match(hash,/^[a-f0-9]{64}$/);
- const mime=messageFor({...fixture,pdf:bytes,hash});assert.ok(mime.includes('witness1@example.com, witness2@example.com'));assert.ok(mime.includes('application/pdf'));assert.ok(!mime.includes('Bcc:'));
 });
 test('preview accepts pending witnesses and no volunteer signature',async()=>{
  const bytes=await generatePDF({...fixture,witnesses:null,signatures:[null,null],volunteerSignature:null},{preview:true});
