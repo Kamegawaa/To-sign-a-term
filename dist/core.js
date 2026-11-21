@@ -1,4 +1,4 @@
-export const VERSION = '1.0.0';
+export const VERSION = '1.0.4';
 export const RETENTION_MS = 7 * 24 * 60 * 60 * 1000;
 export const uid = () => crypto.randomUUID ? crypto.randomUUID() : Array.from(crypto.getRandomValues(new Uint8Array(16)), b => b.toString(16).padStart(2, '0')).join('');
 export const digits = value => String(value || '').replace(/\D/g, '');
